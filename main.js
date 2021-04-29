@@ -152,6 +152,7 @@ var app = http.createServer(function (request, response) {
     request.on('end', function () {
       var post = qs.parse(body);
       var id = post.id;
+      
       fs.unlink(`data/${id}`, function (error) {
         response.writeHead(302, { Location: encodeURI(`/`) });
         response.end();
