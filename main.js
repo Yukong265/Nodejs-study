@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
-
+//refactoring
 var template = {
   HTML:function(title, list, body, control) {
     return `
@@ -76,7 +76,6 @@ var app = http.createServer(function (request, response) {
         var template = templateHTML(title, list,
           `<h2>${title}</h2>${description}`,
           `<a href="/create">create</a>`*/
-
         var list = template.List(filelist);
         var html = template.HTML(title, list,
           `<h2>${title}</h2>${description}`,
