@@ -2,7 +2,6 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
-var warn = require('alert');
 //refactoring
 var template = {
   HTML:function(title, list, body, control) {
@@ -19,7 +18,7 @@ var template = {
   ${control}
   ${body}
   </body>
-  </html>
+  </html>   
     `;
   }, List:function(filelist) {
     var list = '<ul>';
@@ -61,7 +60,6 @@ function templateList(filelist) {
   list = list + '</ul>';
   return list;
 }
-
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -184,7 +182,6 @@ var app = http.createServer(function (request, response) {
       body = body + data;
     });
     request.on('end', function () {
-      warn.alert("Delete File");
       var post = qs.parse(body);
       var id = post.id;
       
