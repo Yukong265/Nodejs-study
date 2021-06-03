@@ -4,19 +4,11 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
-<<<<<<< HEAD
-const makefolder=(dir)=>{
-    if(!fs.existsSync(dir)){
+const makefolder = (dir) => {
+    if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
     }
 }
-=======
-
-var Rps = function () {
-    
-};
-
->>>>>>> main
 var i = 0;
 rl.question('Login : 1, Register : 2 \n', (answer) => {
     makefolder('data');
@@ -25,11 +17,7 @@ rl.question('Login : 1, Register : 2 \n', (answer) => {
             fs.readdir('./data/', function (err, filelist) {
                 fs.readFile(`data/${answer}`, 'utf-8', function (err, data) {
                     var ID = answer;
-<<<<<<< HEAD
                     var findingFile;
-=======
-                    var findingFile
->>>>>>> main
                     while (i < filelist.length) {
                         if (ID === filelist[i]) {
                             findingFile = filelist[i]
