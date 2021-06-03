@@ -9,6 +9,23 @@ const makefolder = (dir) => {
         fs.mkdirSync(dir);
     }
 }
+
+function regi(){
+    rl.question('Register\nID : ', (answer) => {
+        if(fs.existsSync('data')){
+            console.log('Already ID!');
+            regi();
+        }
+        var ID = answer;
+        rl.question('PassWord : ', (answer) => {
+            var PassWord = answer;
+            fs.writeFile(`data/${ID}`, PassWord, function (err) {
+                console.log('Register Success!');
+            })
+        })
+    })
+}
+
 var i = 0;
 rl.question('Login : 1, Register : 2 \n', (answer) => {
     makefolder('data');
@@ -41,15 +58,7 @@ rl.question('Login : 1, Register : 2 \n', (answer) => {
             })
         })
     } else if (answer == '2') {
-        rl.question('Register\nID : ', (answer) => {
-            var ID = answer;
-            rl.question('PassWord : ', (answer) => {
-                var PassWord = answer;
-                fs.writeFile(`data/${ID}`, PassWord, function (err) {
-                    console.log('Register Success!');
-                })
-            })
-        });
+        regi();
     }
 })
 
