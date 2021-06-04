@@ -12,7 +12,7 @@ const makefolder = (dir) => {
 
 function regi(){
     rl.question('Register\nID : ', (answer) => {
-        if(fs.existsSync('data')){
+        if(fs.existsSync(answer)){
             console.log('Already ID!');
             regi();
         }
