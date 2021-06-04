@@ -10,9 +10,9 @@ const makefolder = (dir) => {
     }
 }
 
-function regi(){
+function regi() {
     rl.question('Register\nID : ', (answer) => {
-        if(fs.existsSync(answer)){
+        if (fs.existsSync(answer)) {
             console.log('Already ID!');
             regi();
         }
@@ -64,7 +64,7 @@ rl.question('Login : 1, Register : 2 \n', (answer) => {
 
 var result;
 function ques() {
-    rl.question('Rock Scissors Paper Game!\nYour Answer : ', (answer) => {
+    rl.question('Rock Scissors Paper Game!\nScissors : 1 Paper : 2 Rock : 3\nYour Answer : ', (answer) => {
         const random = Math.random()
         if (random <= 0.33) {
             result = 'Scissors';
@@ -79,6 +79,15 @@ function ques() {
     })
 }
 function RSP(answer, result) {
+    if (answer === '1') {
+        answer = 'Scissors';
+    }
+    else if (answer === '2') {
+        answer = 'Paper';
+    }
+    else {
+        answer = 'Rock';
+    }
     if (answer === result) {
         console.log('Draw!');
         ques();
