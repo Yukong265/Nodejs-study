@@ -81,7 +81,7 @@ function ques() {
 function RSP(answer, result) {
     if (answer === result) {
         console.log('Draw!');
-        RSP(answer, result);
+        ques();
     }
     else if (answer === 'Scissors') {
         if (result === 'Rock') {
