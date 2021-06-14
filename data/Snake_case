@@ -1,7 +1,0 @@
-
-<h2>스네이크 케이스</h2>
-
- 스네이크 케이스(Snake Case)는 간단하다.
-<br>
- 1. 띄어쓰기를 할 부분을 _(언더바)로 채우는 것이다.
-    - ex) Snake_Case, League_of_Legends
