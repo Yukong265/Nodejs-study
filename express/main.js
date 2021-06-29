@@ -5,7 +5,7 @@ var path = require('path');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
 var sanitizeHtml = require('sanitize-html');
-var compression = require('compression')
+var compression = require('compression');
 var template = require('./lib/template.js');
  
 app.use(express.static('public'));
@@ -34,13 +34,13 @@ app.get('/', function(request, response) {
   response.send(html);
 });
  
-app.get('/page/:pageId', function(request, response, next) { 
+app.get('/page/:pageId', function(request, response, next) {
   var filteredId = path.parse(request.params.pageId).base;
   fs.readFile(`data/${filteredId}`, 'utf8', function(err, description){
     if(err){
       next(err);
-    } else {
-      var title = request.params.pageId;
+    } else {  
+      var title = request.params.pageId; 
       var sanitizedTitle = sanitizeHtml(title);
       var sanitizedDescription = sanitizeHtml(description, {
         allowedTags:['h1']
@@ -82,7 +82,7 @@ app.post('/create_process', function(request, response){
   var title = post.title;
   var description = post.description;
   fs.writeFile(`data/${title}`, description, 'utf8', function(err){
-    response.writeHead(302, {Location: encodeURI(`/?id=${title}`)});
+    response.writeHead(302, {Location: encodeURI(`/page/${title}`)});
     response.end();
   });
 });
@@ -118,10 +118,11 @@ app.post('/update_process', function(request, response){
   var description = post.description;
   fs.rename(`data/${id}`, `data/${title}`, function(error){
     fs.writeFile(`data/${title}`, description, 'utf8', function(err){
-      response.redirect(`/?id=${title}`);
+      response.redirect(`/page/${title}`);
     })
   });
 });
+
  
 app.post('/delete_process', function(request, response){
   var post = request.body;
@@ -138,11 +139,11 @@ app.use(function(req, res, next) {
  
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).send('Something broke!')
+  res.status(500).send('Something broke!');
 });
  
 app.listen(3000, function() {
-  console.log('Example app listening on port 3000!')
+  console.log('Example app listening on port 3000!');
 });
 /*
 var http = require('http');
