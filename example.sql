@@ -11,7 +11,7 @@ CREATE TABLE `author` (
 );
  
 --
--- Dumping data for table `author`
+-- Dumping data for table `author` 
 --
  
 INSERT INTO `author` VALUES (1,'egoing','developer');
@@ -30,7 +30,7 @@ CREATE TABLE `topic` (
   `author_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
- 
+
 --
 -- Dumping data for table `topic`
 --
