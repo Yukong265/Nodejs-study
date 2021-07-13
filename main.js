@@ -148,6 +148,15 @@ app.post('/update_process', function (request, response) {
 });
 
 
+app.post('/delete_process', function (request, response) {
+  var post = request.body;
+  db.query(`DELETE FROM topic WHERE id=${post.id}`, function (error, result) {
+    if (error) {
+      throw error;
+    }
+    response.redirect('/');
+  })
+});
 
 app.use(function (req, res, next) {
   res.status(404).send('Sorry cant find that!');
