@@ -20,46 +20,28 @@ db.connect();
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
-app.get('*', function (request, response, next) {
-  fs.readdir('./data', function (error, filelist) {
-    request.list = filelist;
-    next();
-  });
+app.get('/page/pageId', function (request, response, next) {
+  var filteredId = path.parse(request.params.pageId).base;
+  next();
 });
 
 
 //route, routing
 //app.get('/', (req, res) => res.send('Hello World!'))
 app.get('/', function (request, response) {
-  /*var title = 'Welcome';
-  var description = 'Hello, Node.js';
-  var list = template.list(request.list);
-  var html = template.HTML(title, list,
-    `
-    <h2>${title}</h2>${description}
-    <img src="/images/hello.jpg" style="width:300px; display:block; margin-top:10px;">
-    `,
-    `<a href="/create">create</a>`
-  ); 
-  response.send(html);*/
   db.query(`SELECT * FROM topic`, function (error, topics) {
     var title = 'Welcome';
     var description = 'Hello, Node.js';
     var list = template.list(topics);
-    var html = template.HTML(title, list,
-      `
-      <h2>${title}</h2>${description}
-      <img src="images/coding.jpg" style="width:300px; display:block; margin-top:10px;">
-      `,
-      `<a href="/create/${topics[0].id}">create</a>`
-    );
+    var control = `<h2>${title}</h2>${description}`;
+    var body = `<a href="/create">create</a>`;
+    var html = template.HTML(title, list, control, body);
     response.send(html);
   })
 });
 
 app.get('/page/:pageId', function (request, response, next) {
   var filteredId = path.parse(request.params.pageId).base;
-  console.log(filteredId);
   db.query(`SELECT * FROM topic`, function (error, topics) {
     if (error) {
       throw error;
@@ -73,10 +55,10 @@ app.get('/page/:pageId', function (request, response, next) {
         var list = template.list(topics);
         var html = template.HTML(title, list,
           `<h2>${title}</h2>${description}`,
-          ` <a href="/create/:pageId">create</a>
-                <a href="/update/${topic[filteredId].id}">update</a>
+          ` <a href="/create">create</a>
+                <a href="/update/${topic[0].id}">update</a>
                 <form action="/delete_process" method="post">
-                  <input type="hidden" name="id" value="${topic[filteredId].id}">
+                  <input type="hidden" name="id" value="${topic[0].id}">
                   <input type="submit" value="delete">
                 </form>`
         );
@@ -86,7 +68,7 @@ app.get('/page/:pageId', function (request, response, next) {
   })
 });
 
-app.get('/create/:pageId', function (request, response) {
+app.get(`/create`, function (request, response) {
   db.query(`SELECT * FROM topic`, function (error, topics) {
     if (error) {
       throw error;
@@ -111,60 +93,17 @@ app.get('/create/:pageId', function (request, response) {
 
 app.post('/create_process', function (request, response) {
   var post = request.body;
-  db.query(`INSERT INTO topic (title, description, created, author_id) VALUES (?, ?, NOW(), ?)`, [post.title, post.description], 1),
+  db.query(`INSERT INTO topic (title, description, created, author_id) VALUES (?, ?, NOW(), ?)`, [post.title, post.description, 1],
     function (error, result) {
       if (error) {
         throw error;
       }
-      response.send(302, { Location: encodeURI(`/page/${result.insertId}`) });
-    }
-});
-
-app.get('/update/:pageId', function (request, response) {
-  var filteredId = path.parse(request.params.pageId).base;
-  fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-    var title = request.params.pageId;
-    var list = template.list(request.list);
-    var html = template.HTML(title, list,
-      `
-      <form action="/update_process" method="post">
-        <input type="hidden" name="id" value="${title}">
-        <p><input type="text" name="title" placeholder="title" value="${title}"></p>
-        <p>
-          <textarea name="description" placeholder="description">${description}</textarea>
-        </p>
-        <p>
-          <input type="submit">
-        </p>
-      </form>
-      `,
-      `<a href="/create">create</a> <a href="/update/${title}">update</a>`
-    );
-    response.send(html);
-  });
-});
-
-app.post('/update_process', function (request, response) {
-  var post = request.body;
-  var id = post.id;
-  var title = post.title;
-  var description = post.description;
-  fs.rename(`data/${id}`, `data/${title}`, function (error) {
-    fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-      response.redirect(`/page/${title}`);
+      response.writeHead(302, { Location: encodeURI(`/page/${result.insertId}`) });
+      response.end();
     })
-  });
 });
 
 
-app.post('/delete_process', function (request, response) {
-  var post = request.body;
-  var id = post.id;
-  var filteredId = path.parse(id).base;
-  fs.unlink(`data/${filteredId}`, function (error) {
-    response.redirect('/');
-  });
-});
 
 app.use(function (req, res, next) {
   res.status(404).send('Sorry cant find that!');
@@ -173,7 +112,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   console.error(err.stack)
   res.status(500).send('Something broke!');
-})
+});
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
