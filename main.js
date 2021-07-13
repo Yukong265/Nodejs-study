@@ -103,6 +103,50 @@ app.post('/create_process', function (request, response) {
     })
 });
 
+app.get('/update/:pageId', function (request, response) {
+  var filteredId = path.parse(request.params.pageId).base;
+  db.query('SELECT * FROM topic', function (error, topics) {
+    if (error) {
+      throw error;
+    }
+    db.query(`SELECT * FROM topic WHERE id=${filteredId}`, function (error2, topic) {
+      if (error2) {
+        throw error;
+      }
+      var title = topic[0].title;
+      var description = topic[0].description;
+      var list = template.list(topics);
+      var html = template.HTML(title, list,
+        `
+      <form action="/update_process" method="post">
+        <input type="hidden" name="id" value="${filteredId}">
+        <p><input type="text" name="title" placeholder="title" value="${title}"></p>
+        <p>
+          <textarea name="description" placeholder="description">${description}</textarea>
+        </p>
+        <p>
+          <input type="submit">
+        </p>
+      </form>
+      `,
+        `<a href="/create">create</a> <a href="/update/${filteredId}">update</a>`
+      );
+      response.send(html);
+    })
+  })
+});
+
+app.post('/update_process', function (request, response) {
+  var post = request.body;
+  var id = post.id;
+  var title = post.title;
+  var description = post.description;
+  console.log(title, description, id);
+  db.query(`UPDATE topic SET title="${title}", description="${description}" WHERE id=${id}`, function (error, result) {
+    response.redirect(`/page/${id}`);
+  })
+});
+
 
 
 app.use(function (req, res, next) {
