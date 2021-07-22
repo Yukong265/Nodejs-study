@@ -1,10 +1,7 @@
 var express = require('express')
 var app = express()
-var fs = require('fs');
 var path = require('path');
-var qs = require('querystring');
 var bodyParser = require('body-parser');
-var sanitizeHtml = require('sanitize-html');
 var compression = require('compression');
 var template = require('./lib/template.js');
 var mysql = require('mysql');
@@ -20,10 +17,6 @@ db.connect();
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
-app.get('/page/pageId', function (request, response, next) {
-  var filteredId = path.parse(request.params.pageId).base;
-  next();
-});
 
 
 //route, routing
@@ -46,7 +39,7 @@ app.get('/page/:pageId', function (request, response, next) {
     if (error) {
       throw error;
     }
-    db.query(`SELECT * FROM topic WHERE id=${filteredId}`, function (error2, topic) {
+    db.query(`SELECT * FROM topic LEFT JOIN author ON topic.author_id=author.id WHERE topic.id=${filteredId}`, function (error2, topic) {
       if (error2) {
         throw error;
       } else {
@@ -54,7 +47,9 @@ app.get('/page/:pageId', function (request, response, next) {
         var description = topic[0].description;
         var list = template.list(topics);
         var html = template.HTML(title, list,
-          `<h2>${title}</h2>${description}`,
+          `<h2>${title}</h2>
+          <h5>By ${topic[0].name}</h5>
+          ${description}`,
           ` <a href="/create">create</a>
                 <a href="/update/${topic[0].id}">update</a>
                 <form action="/delete_process" method="post">
@@ -70,24 +65,28 @@ app.get('/page/:pageId', function (request, response, next) {
 
 app.get(`/create`, function (request, response) {
   db.query(`SELECT * FROM topic`, function (error, topics) {
-    if (error) {
-      throw error;
-    } else {
-      var title = 'WEB - create';
-      var list = template.list(topics);
-      var html = template.HTML(title, list, `
-    <form action="/create_process" method="post">
-      <p><input type="text" name="title" placeholder="title"></p>
-      <p>
-        <textarea name="description" placeholder="description"></textarea>
-      </p>
-      <p>
-        <input type="submit">
-      </p>
-    </form>
-  `, '');
-      response.send(html);
-    }
+    db.query('SELECT * FROM author', function (error2, authors) {
+      if (error) {
+        throw error;
+      } else {
+        var title = 'WEB - create';
+        var list = template.list(topics);
+        var tag = template.select(authors);
+        var html = template.HTML(title, list, `
+      <form action="/create_process" method="post">
+        <p><input type="text" name="title" placeholder="title"></p>
+        <p>
+          <textarea name="description" placeholder="description"></textarea>
+        </p>
+        ${tag}        
+        <p>
+          <input type="submit">
+        </p>
+      </form>
+    `, '');
+        response.send(html);
+      }
+    })
   })
 });
 
@@ -116,8 +115,10 @@ app.get('/update/:pageId', function (request, response) {
       var title = topic[0].title;
       var description = topic[0].description;
       var list = template.list(topics);
-      var html = template.HTML(title, list,
-        `
+      db.query('SELECT * FROM author', function (error3, authors) {
+        var tag = template.select(authors);
+        var html = template.HTML(title, list,
+          `
       <form action="/update_process" method="post">
         <input type="hidden" name="id" value="${filteredId}">
         <p><input type="text" name="title" placeholder="title" value="${title}"></p>
@@ -125,13 +126,17 @@ app.get('/update/:pageId', function (request, response) {
           <textarea name="description" placeholder="description">${description}</textarea>
         </p>
         <p>
+        ${tag}
+        </p>
+        <p>
           <input type="submit">
         </p>
       </form>
       `,
-        `<a href="/create">create</a> <a href="/update/${filteredId}">update</a>`
-      );
-      response.send(html);
+          `<a href="/create">create</a> <a href="/update/${filteredId}">update</a>`
+        );
+        response.send(html);
+      })
     })
   })
 });
@@ -146,7 +151,6 @@ app.post('/update_process', function (request, response) {
     response.redirect(`/page/${id}`);
   })
 });
-
 
 app.post('/delete_process', function (request, response) {
   var post = request.body;
