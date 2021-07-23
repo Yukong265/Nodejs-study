@@ -23,7 +23,9 @@
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "path": "^0.12.7",
-    "sanitize-html": "^1.18.2"
+    "sanitize-html": "^1.18.2",
+    "sequelize": "^6.6.5"
   }
 }
