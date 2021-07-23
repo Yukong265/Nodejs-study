@@ -4,13 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var template = require('./lib/template.js');
-var mysql = require('mysql');
-var db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'rlawjdtjs0',
-  database: 'workbenchs'
-});
+const db = require('./routes/db');
 
 db.connect();
 
