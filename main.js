@@ -115,8 +115,8 @@ app.get('/update/:pageId', function (request, response) {
       var title = topic[0].title;
       var description = topic[0].description;
       var list = template.list(topics);
-      db.query('SELECT * FROM author', function (error3, authors) {
-        var tag = template.select(authors);
+      db.query('SELECT * FROM author', function (error3, author) {
+        var tag = template.select(author);
         var html = template.HTML(title, list,
           `
       <form action="/update_process" method="post">
