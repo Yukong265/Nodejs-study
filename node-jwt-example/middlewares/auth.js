@@ -31,3 +31,5 @@ const authMiddleware = (req,res, next) =>{
         next()
     }).catch(onError)
 }
+
+module.exports = authMiddleware;
