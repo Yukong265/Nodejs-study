@@ -10,7 +10,7 @@ const User = new Schema({
 })
 
 User.statics.create = function(username, password) {
-    const encrypted = crypto.createHmac('sha1', config.secret)
+    const encrypted = crypto.createHmac('sha512', config.SECRET)
                     .update(password)
                     .digest('base64')
     console.log(password, encrypted);
@@ -28,7 +28,7 @@ User.statics.findOneByUsername = function(username) {
 }
 
 User.methods.verify = function(password) {
-    const encrypted = crypto.createHmac('sha1', config.secret)
+    const encrypted = crypto.createHmac('sha512', config.SECRET)
                       .update(password)
                       .digest('base64')
     console.log(this.password === encrypted);

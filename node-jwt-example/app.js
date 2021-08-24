@@ -10,6 +10,7 @@ const app = express();
 
 mongoose.connect(config.mongodbUri);
 const db = mongoose.connection;
+console.log(config.SECRET)
 db.on('error', console.error)
 db.once('open', ()=>{
     console.log('connected to mongodb server!');
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-app.set('jwt-secret', config.secret);
+app.set('jwt-secret', config.SECRET);
 
 app.get('/', (req,res)=>{
     res.send('Hello JWT');
