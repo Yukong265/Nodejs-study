@@ -55,3 +55,5 @@ class Zero1 extends Human {
 
 const newZero = new Zero1('human', 'Zero', 'Cho');
 Human1.isHuman(newZero);
+
+//2
