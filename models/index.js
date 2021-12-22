@@ -4,8 +4,7 @@ const Sequelize = require("sequelize");
 const Item = require("./item");
 const User = require("./user");
 
-const env = process.env.NODE_ENV || "development";
-const config = require("../config/config.json")[env];
+const config = require("../config/config.js");
 const db = {};
 
 const sequelize = new Sequelize(
