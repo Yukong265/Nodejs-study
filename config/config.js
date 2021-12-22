@@ -8,6 +8,8 @@ const development = {
     dialect: env.SQLDIALECT
 }
 
+module.exports = development;
+
 // "development": {
 //     "username": "root",
 //     "password": "rlawjdtjs0",
