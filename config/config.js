@@ -1,7 +1,11 @@
 const env = process.env;
 
 const development = {
-    username: env.SQLUSERANME
+    username: env.SQLUSERANME,
+    password: env.SQLUSERANME,
+    database: env.SQLDATABASE,
+    host: env.SQLHOST,
+    dialect: env.SQLDIALECT
 }
 
 // "development": {
