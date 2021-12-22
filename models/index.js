@@ -8,7 +8,7 @@ const config = require("../config/config.js");
 const db = {};
 
 const sequelize = new Sequelize(
-  ...config
+  config
 );
 
 db.sequelize = sequelize;
