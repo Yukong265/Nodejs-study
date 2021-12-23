@@ -1,4 +1,5 @@
 require('dotenv').config();
+const mysql = require('mysql2');
 const env = process.env;
 
 const development = {
