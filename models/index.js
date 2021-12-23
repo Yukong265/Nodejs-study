@@ -4,11 +4,12 @@ const Sequelize = require("sequelize");
 const Item = require("./item");
 const User = require("./user");
 
-const config = require("../config/config.js");
+const env = process.env.NODE_ENV || 'development';
+const config = require("../config/config");
 const db = {};
 
 const sequelize = new Sequelize(
-  config
+  {... config, sync: false }
 );
 
 db.sequelize = sequelize;
