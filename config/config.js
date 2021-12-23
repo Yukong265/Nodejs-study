@@ -6,7 +6,7 @@ const development = {
   password: env.SQLPASSWORD,
   database: env.SQLDATABASE,
   host: env.SQLHOST,
-  dialect: env.SQLDIALECT,
+  dialect: mysql
 };
 
 const production = {
