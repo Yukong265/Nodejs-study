@@ -1,14 +1,31 @@
+require('dotenv').config();
 const env = process.env;
 
 const development = {
-    username: env.SQLUSERANME,
-    password: env.SQLUSERANME,
+  username: env.SQLUSERNAME,
+  password: env.SQLPASSWORD,
+  database: env.SQLDATABASE,
+  host: env.SQLHOST,
+  dialect: env.SQLDIALECT,
+};
+
+const production = {
+    username: env.SQLUSERNAME,
+    password: env.SQLPASSWORD,
     database: env.SQLDATABASE,
     host: env.SQLHOST,
-    dialect: env.SQLDIALECT
-}
+    dialect: env.SQLDIALECT,
+  };
+  
+  const test = {
+    username: env.SQLUSERNAME,
+    password: env.SQLPASSWORD,
+    database: env.SQLDATABASE,
+    host: env.SQLHOST,
+    dialect: env.SQLDIALECT,
+  };
 
-module.exports = development;
+module.exports = { development, production, test };
 
 // "development": {
 //     "username": "root",
