@@ -25,6 +25,9 @@ router.post("/item", verifyToken, async (req, res) => {
   const username = req.decoded.username;
   const { title, description } = req.body;
   try {
+    if(!title || !description) {
+      return res.status()
+    }
     await Item.create({
       title: title,
       description,
@@ -93,12 +96,16 @@ router.delete("/item/:item_id", verifyToken, async (req, res) => {
   try {
     const items = await Item.findAll({ where: { username: username } });
     if (!items[id]) {
-      res.status(404).json({
+      return res.status(404).json({
         code: 404,
         message: "not found",
       });
     }
     await Item.delete({ where: { id: id, username: username } });
+    return res.status(200).json({
+      code:200,
+      message: 'delete success'
+    })
   } catch (error) {
     return res.status(500).json({
       code: 500,
