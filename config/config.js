@@ -5,7 +5,7 @@ const development = {
   username: env.SQLUSERNAME,
   password: env.SQLPASSWORD,
   database: env.SQLDATABASE,
-  dialect: env.SQLDIALECT,
+  dialect: mysql,
   host: env.SQLHOST
 };
 
