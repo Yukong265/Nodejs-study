@@ -49,7 +49,11 @@ app.use(passport.session());
 app.use('/user', UserRouter);
 app.use('/list', ItemRouter);
 
-
+app.get('/', (req,res)=>{
+    return res.json({
+        message:'ping-pong'
+    })
+})
 
 app.use((req, res, next)=>{
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)
@@ -61,14 +65,10 @@ app.use((err, req,res, next)=>{
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
-    res.send('error');
+    res.send(err.message);
 })
 
-app.get('/', (req,res)=>{
-    res.json({
-        message:'nice'
-    })
-})
+
 
 
 app.listen(app.get('port'), ()=>{
