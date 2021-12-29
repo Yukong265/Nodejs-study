@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
 router.post("/register", async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    const exUser = await User.findOne({ where: { id: username } });
+    const exUser = await User.findOne({ where: { username: username } });
     if (exUser) {
       return res.sendStatus(409).json({
         code:409,
