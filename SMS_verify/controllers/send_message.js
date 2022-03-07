@@ -53,7 +53,7 @@ module.exports = function send_message(phone_number) {
     function (err, res, html) {
       if (err) console.error(err);
       else {
-        console.log(html);
+        console.log(html);  
       }
     }
   );
