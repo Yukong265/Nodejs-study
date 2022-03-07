@@ -46,17 +46,16 @@ module.exports = function send_message(phone_number) {
         type: "SMS",
         countryCode: "82",
         from: process.env.PHONENUMBER,
-        content: `인증번호 [${verifyKey}]`,
+        content: `인증번호는 [${verifyKey}] 입니다`,
         messages: [{ to: `${user_phone_number}` }],
       },
     },
     function (err, res, html) {
       if (err) console.error(err);
       else {
-        resultCode = 200;
         console.log(html);
       }
     }
   );
-  return resultCode;
+  return verifyKey;
 };

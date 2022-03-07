@@ -6,8 +6,12 @@ const send_message = require('./controllers/send_message')
 
 app.get('/sms/:phone', (req,res)=>{
     const paramObj = req.params;
-    send_message(paramObj.phone);
-    res.send("complete!")
+    verifyCode = send_message(paramObj.phone);
+    res.status(200).json({
+        code:200,
+        verifyCode: verifyCode,
+        message: "SMS send to phone number!"
+    })
 })
 
 app.listen(3000, (req, res)=>{
