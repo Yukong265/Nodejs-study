@@ -2,6 +2,7 @@ const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const KakaoStrategy = require('passport-kakao').Strategy;
+const NaverStrategy = require('passport-naver');
 
 module.exports = (app) => {
     passport.serializeUser((user, done)=>{
@@ -43,12 +44,24 @@ module.exports = (app) => {
     passport.use(
         new KakaoStrategy(
             {
-                clientID: 'b0a94bd768e6198f4c21e7a2b76520b7',
-                callbackURL: '/auth/login/kakao/callback',
+                clientID: process.env['KAKAO_CLIENT_ID'],
+                callbackURL: process.env['KAKAO_CALLBACK']
             }, async (accessToken, refreshToken, profile, done) => {
                 console.log(accessToken);
                 console.log(refreshToken);
                 done(null, profile)
+            }
+        )
+    )
+
+    passport.use(
+        new NaverStrategy(
+            {
+                clientID: process.env['NAVER_CLIENT_ID'],
+                clientSecret:process.env['NAVER_CLIENT_SECRET'],
+                callbackURL:process.env['NAVER_CALLBACK']
+            }, (accessToken, refreshToken, profile, done)=>{
+                return done(null, profile)
             }
         )
     )
