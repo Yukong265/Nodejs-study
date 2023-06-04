@@ -1,17 +1,26 @@
-import express, { Request, Response, NextFunction } from 'express';
+import * as dotenv from "dotenv";
+import express, { Response, Request, NextFunction } from "express";
+import cors from "cors";
+import { PrismaClient } from '@prisma/client'
 
-const app = express();
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Hello World!");
+dotenv.config();
+
+const PORT: number = parseInt(process.env.PORT as string, 10) || 5000;
+const HOST: string = process.env.HOST || "localhost";
+const app: express.Application = express();
+
+app.use(cors());
+app.use(express.json());
+app.use((req:Request, res:Response, next:NextFunction)=>{
+    console.log(`Request occur! ${req.method}, ${req.url}`);
+    next();
 })
 
-app.get("/json", (req:Request, res:Response, next: NextFunction) => {
-    res.json({
-        "abc":"success"
-    })
-})
 
-app.listen("3000", () => {
-    console.log("Server running on port 3000!")
+
+app.listen(PORT, HOST, async () => {
+    console.log(`server on : listening on ${HOST}:${PORT}`);
+
+    await 
 })
