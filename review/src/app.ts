@@ -1,10 +1,11 @@
 import * as dotenv from "dotenv";
 import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
-import { PrismaClient } from '@prisma/client'
-
+import router from "./routes";
 
 dotenv.config();
+
+
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 5000;
 const HOST: string = process.env.HOST || "localhost";
@@ -17,10 +18,8 @@ app.use((req:Request, res:Response, next:NextFunction)=>{
     next();
 })
 
-
+app.use("/", router);
 
 app.listen(PORT, HOST, async () => {
     console.log(`server on : listening on ${HOST}:${PORT}`);
-
-    await 
 })
