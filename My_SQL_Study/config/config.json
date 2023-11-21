@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "rlawjdtjs0",
+    "database": "workbenchs",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "rlawjdtjs0",
+    "database": "workbenchs",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "rlawjdtjs0",
+    "database": "workbenchs",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
