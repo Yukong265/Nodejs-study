@@ -1,0 +1,17 @@
+/JWT_Study
+/node_books
+/node-jwt-example
+
+
+
+
+
+# sms verify
+/SMS_verify/node_modules/
+/SMS_verify/*.env
+/SMS_verify/package-lock.json
+
+#social login
+/social_login/*.env
+/social_login/node_modules/
+/social_login/package-lock.json
